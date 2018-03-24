@@ -1,4 +1,4 @@
-# pixels-by-picasso
+# pixelsbypicasso
 This is a Gatsby project.
 
 For an overview of the project infra-structure please refer to [Gatsby](https://www.gatsbyjs.org/).
