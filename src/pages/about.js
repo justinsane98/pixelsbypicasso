@@ -4,7 +4,7 @@ import Link from 'gatsby-link'
 const AboutPage = () => (
   <div>
     <h1>Want to know more?</h1>
-    <p>Awesome! Let's grab a drink or have a chat about how intimidating a blank canvas can be to someone who hasn't painted before.</p>
+    <p>Awesome! Let's grab a drink or have a chat about how intimidating a blank canvas can be for someone who has never painted before.</p>
     <h4>Contact:</h4>
     <ul className="naked">
       <li>Justin Shearer</li>
