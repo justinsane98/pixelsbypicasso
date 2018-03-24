@@ -16,4 +16,6 @@ gatsby develop
 ```
 
 ## Deploy
-Push 'gh-pages' branch to origin
+```sh
+npm run deploy
+```
