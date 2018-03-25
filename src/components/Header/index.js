@@ -6,9 +6,6 @@ import headerBackground2x from './../../images/header@2x.jpg'
 const Header = () => (
   <div>
     <div
-      >
-    </div>
-    <div
       style={{
         borderTop: '4px solid #5AB5A4',
         borderBottom: '1px solid #fff',

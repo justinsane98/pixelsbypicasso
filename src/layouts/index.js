@@ -10,11 +10,12 @@ const TemplateWrapper = ({ children }) => (
     <Helmet
       title="Pixels by Picasso"
       meta={[
-        { name: 'description', content: 'Sample' },
-        { name: 'keywords', content: 'sample, something' },
+        { name: 'description', content: 'Pixels by Picasso helps kids of all ages realize that painting is not magic and that it can be broken down into a science.' },
+        { name: 'keywords', content: 'art, kids, painting, pixels, pixel art, paints, arts and crafts, crafts, birthday, christmas, picasso' },
       ]}
     />
-    <Header />
+    {/* {location.pathname == '/' &&  IF HOME PAGE ONLY INSERT HERE */}
+    <Header/>
     <div
       style={{
         margin: '0 auto',
