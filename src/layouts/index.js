@@ -20,7 +20,7 @@ const TemplateWrapper = ({ children }) => (
       style={{
         margin: '0 auto',
         maxWidth: 960,
-        padding: '10px 1.75rem 1.45rem'
+        padding: '20px 1.75rem 1.45rem'
       }}
     >
       {children()}

@@ -13,6 +13,12 @@ module.exports = {
                 // Do NOT track users! +1 for privacy!
                 respectDNT: true
               }
+            },
+            {
+            resolve: 'gatsby-plugin-mailchimp',
+            options: {
+              endpoint: 'https://pixelsbypicasso.us12.list-manage.com/subscribe/post?u=30d7d6bda30d19d1b7ec33699&amp;id=27ad4438d6',
+              }
             }
            ]
 };
