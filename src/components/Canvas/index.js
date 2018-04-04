@@ -12,8 +12,7 @@ export default class Canvas extends React.Component {
       height: '250',
       zoom: this.props.zoom,
       backgroundColor: 'white',
-      pixelArray: [{x:0, y: 0, color:'green'}, {x:0, y: 10, color:'red'}],
-      imgData: ''
+      pixelArray: this.props.pixelData
     }
   }
   
@@ -22,15 +21,28 @@ export default class Canvas extends React.Component {
   /* function to quantize colors in pixel array */
   /* function to update zoom level */
   
+  
   render() {
-    var self = this
+    const pixelArray = this.state.pixelArray
+    const hasPixels = this.state.hasPixels
+    const self = this
+    
+    const pixels = function(){
+      hasPixels ? (
+        pixelArray.map((pixel) => {
+        return <Pixel color={pixel.color} key={i} x={pixel.x} y={pixel.y} zoom={this.state.zoom} />
+      })
+      ) : (
+        console.log('no pixels')
+      )
+      
+      
+    }
     return (
-      <div style={{backgroundColor: 'white', width: self.state.width+'px', height: self.state.height +'px'}}>
-        <Stage width={self.state.width} height={self.state.height}>
+      <div style={{backgroundColor: 'white', width: this.state.width+'px', height: this.state.height +'px'}}>
+        <Stage width={this.state.width} height={this.state.height}>
             <Layer>
-              {self.state.pixelArray.map(function(object, i){
-                return <Pixel color={object.color} key={i} x={object.x} y={object.y} zoom={self.state.zoom} />
-              })}
+              { pixels }
             </Layer>
         </Stage>
       </div>

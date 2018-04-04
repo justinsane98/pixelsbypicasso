@@ -9,11 +9,13 @@
     "gatsby-plugin-google-analytics": "^1.0.24",
     "gatsby-plugin-mailchimp": "^1.0.0",
     "gatsby-plugin-react-helmet": "^2.0.8",
+    "get-canvas-pixel-color": "^1.0.0",
     "konva": "^2.0.2",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-helmet": "^5.2.0",
-    "react-konva": "^1.1.6"
+    "react-konva": "^1.1.6",
+    "react-simple-file-input": "^2.1.0"
   },
   "keywords": [
     "gatsby"
