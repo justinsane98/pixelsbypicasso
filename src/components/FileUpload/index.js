@@ -29,9 +29,8 @@ export default class FileUpload extends React.Component {
   render(){
     return(
       <div>
-        To upload a file:
- 
          <label>
+            
             <FileInput
               readAs='dataUrl'
               style={ { display: 'none' } }
@@ -46,9 +45,7 @@ export default class FileUpload extends React.Component {
               onCancel={this.showInvalidFileTypeMessage}
               onAbort={this.resetCancelButtonClicked}
              />
- 
-           <span>Click Here</span>
- 
+           <span className='button' style={{width: '100%', textAlign: 'center', marginBottom: '20px'}}>Select a photo</span>
          </label>
       </div>
     );
@@ -77,7 +74,6 @@ export default class FileUpload extends React.Component {
   }
  
   handleFileSelected(event, file){
-    /* send img data to /beta */
-    this.props.storeData(event.target.result)
+    this.props.base64Image(event.target.result)
   }
 }

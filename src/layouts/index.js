@@ -14,8 +14,9 @@ const TemplateWrapper = ({ children }) => (
         { name: 'keywords', content: 'art, kids, painting, pixels, pixel art, paints, arts and crafts, crafts, birthday, christmas, picasso' },
       ]}
     />
-    {/* {location.pathname == '/' &&  IF HOME PAGE ONLY INSERT HERE */}
-    <Header/>
+    {location.pathname != '/fish' &&
+      <Header />
+    }
     <div
       style={{
         margin: '0 auto',

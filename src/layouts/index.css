@@ -117,13 +117,33 @@ optgroup {
   font-weight: 700;
 }
 button,
+.button,
 input {
   overflow: visible;
 }
 button,
+.button,
 select {
   text-transform: none;
 }
+
+span.button {
+  width: 100%;
+  display: block;
+  padding: 10px 0;
+  background-color: rgba(0,206,209, 0.7);
+  border: 0px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  color: white;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  font-size: 18px;
+}
+.button:hover{
+  cursor: pointer;
+  background-color: rgba(0,206,209,0.9);
+}
+
 [type=reset],
 [type=submit],
 button,
@@ -626,7 +646,6 @@ pre tt:after {
   }
 }
 
-
 ul.naked {
   margin-left: 0;
   margin-right: 0;
@@ -637,4 +656,60 @@ ul.naked {
   padding-top: 0;
   margin-bottom: 1.45rem;
   list-style: none;
+}
+
+.fadein3000 {
+   animation: cssAnimation 0s ease-out 3s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+        margin: 0
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+        margin: 0
+    }
+}
+
+
+.flex-container {
+  padding: 20px;
+}
+.flex-box {
+  padding: 10px;
+}
+.canvas-box {
+}
+.directions-box {
+}
+
+@media only screen and (min-width: 641px){
+  .flex-container {
+    display: flex;
+  }
+  .canvas-box {
+    flex: 1;
+  }
+  .directions-box {
+    flex: 2;
+  }
+}
+@media only screen and (min-width: 1025px){
+  .canvas-box {
+    flex: 1;
+  }
+  .directions-box {
+    flex: 3;
+  }
 }

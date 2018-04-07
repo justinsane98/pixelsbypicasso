@@ -10,19 +10,36 @@ import FileUpload from '../components/FileUpload'
   constructor(props) {
     super(props)
     this.state = {
-      image: [],
+      imageBase64: null,
+      imageElem: null,
+      canvasElem: null,
+      canvasId: 'picasso-canvas',
       hasImageData: false,
-      pixels: [],
       hasPixelData: false,
+      pixels: []
     }
-    this.storeData = this.storeData.bind(this)
+    this.setImageBase64 = this.setImageBase64.bind(this)
+    this.processImage = this.processImage.bind(this)
+    this.setCanvasElem = this.setCanvasElem.bind(this)
   }
   
-  /* function to capture image data from "upload" */
-  /* function to convert img to pixel array */
-  storeData = function(image){
-    this.setState({ image: image });
-    this.setState({ hasImageData: true });
+  setImageBase64 = function(base64String){
+    var self = this
+    var img = new window.Image();
+    
+    this.setState({ imageBase64: base64String })
+    img.setAttribute("src", this.state.imageBase64);
+    
+    img.onload = () => {
+      debugger
+      this.setState({ hasImageData: true})
+      this.setState({ imageElem: img })
+      self.process()
+    }
+   
+  }
+  
+  process = function() {
     this.processImage()
   }
   
@@ -56,8 +73,14 @@ import FileUpload from '../components/FileUpload'
   addCoordsToColorInColorCache = function(x, y, pixelColor, colorCache, colorCacheIndex){
     colorCache[colorCacheIndex].colorArray.push([x, y])
   }
+  
   addPixelColorToColorCache = function(pixel, colorCache){
     colorCache.push(pixel)
+  }
+  
+  setCanvasElem = function(){
+    var elem = document.getElementById(this.state.canvasId).getElementsByTagName('canvas')[0]
+    this.setState(canvasElem: elem)
   }
   
   processImage = function(){
@@ -65,61 +88,52 @@ import FileUpload from '../components/FileUpload'
     this.pixelate()
     this.resize()
     this.crop()
-    var self = this
+    this.setCanvasElem()
     
-    var id = "fuck"
-    var can = document.createElement("canvas");
-    id && can.setAttribute("id", id);
-    can.width = 26; //  <--------------------------  SET TO REAL WIDTH
-    can.height = 26; // <--------------------------  SET TO REAL HEIGHT
-    var img = new window.Image();
-    document.body.appendChild(can);
+    var colorCache = []
+    // UGH this is hacky but I can't figure out how to identify the canvas instance
+    debugger
+    // crop to top 26px...
+    this.state.canvasElem.getContext("2d").drawImage(this.state.imageElem, 0, 0, this.state.canvasWidth,  this.state.canvasHeight, 0, 0, this.state.canvasWidth, this.state.canvasHeight);
     
-    img.setAttribute("src", this.state.image);
-    //wait until the image below loads...
-    img.addEventListener("load", function () {
-      can.getContext("2d").drawImage(img, 0, 0);
-      var colorCache = []
-        
-        // For each pixel...
-        for(var y = 0; y < can.height; y++){
-          for(var x = 0; x < can.width; x++){
-            var pixelColor = getCanvasPixelColor(can, x, y).rgb
-            var pixel = {rgb: pixelColor, colorArray: [[x, y]]}
-            
-            if(colorCache.length > 0){
-              var pixelColorInColorCache = self.colorInArray(pixelColor, colorCache)
-              var colorCacheIndex = self.colorInArray(pixelColor, colorCache)
-              var addPixelColorToColorCache = self.colorToArray
-              var addCoordsToColorInColorCache = self.coordsToColorInArray
-              
-              if(pixelColorInColorCache > -1){
-                  self.addCoordsToColorInColorCache(x, y, pixelColor, colorCache, colorCacheIndex)
-              } else {
-                self.addPixelColorToColorCache(pixel, colorCache)
-              }
-            } else {
-                self.addPixelColorToColorCache(pixel, colorCache)
-            }
+    // For each pixel...
+    for(var y = 0; y < self.state.canvasHeight; y++){
+      for(var x = 0; x < self.state.canvasWidth; x++){
+        var pixelColor = getCanvasPixelColor(canvasElem, x, y).rgb
+        var pixel = {rgb: pixelColor, colorArray: [[x, y]]}
+
+        if(colorCache.length > 0){
+          var pixelColorInColorCache = self.colorInArray(pixelColor, colorCache)
+          var colorCacheIndex = self.colorInArray(pixelColor, colorCache)
+          var addPixelColorToColorCache = self.colorToArray
+          var addCoordsToColorInColorCache = self.coordsToColorInArray
+
+          if(pixelColorInColorCache > -1){
+              self.addCoordsToColorInColorCache(x, y, pixelColor, colorCache, colorCacheIndex)
+          } else {
+            self.addPixelColorToColorCache(pixel, colorCache)
           }
+        } else {
+            self.addPixelColorToColorCache(pixel, colorCache)
         }
-        self.setState({ pixels: colorCache })
-    });
+      }
+    }
+    self.setState({ pixels: colorCache })
   }
   
-  
-  
-  render() {
-    const pixels = this.state.pixels
-    const hasImageData = this.state.hasImageData
-    const fileUpload = hasImageData ? (
-        <h2>File uploaded!</h2>
+  render() {   
+    const fileUpload = this.state.hasImageData ? (
+        <div>
+        <h2 className='fadein3000'>File uploaded!</h2>
+        <FileUpload base64Image={this.setImageBase64}/>
+        </div>
       ):(
-        <FileUpload storeData={this.storeData}/>
+        <FileUpload base64Image={this.setImageBase64}/>
     )
+       
     
     const sortedColors = this.state.pixels.sort((a, b) => b.colorArray.length - a.colorArray.length)
-    const showColors = sortedColors.map((color, index) => {                    
+    const showColors = sortedColors.map((color, index) => {
       return (
         <li key={index}>
         <p>{this.state.pixels[index].rgb} has {this.state.pixels[index].colorArray.length} instances.</p>
@@ -136,15 +150,29 @@ import FileUpload from '../components/FileUpload'
       )
     })
     
-    return (
-    <div>
-      {fileUpload}
-      <h2>Total colors: {this.state.pixels.length}</h2>
+    const showLegend = this.state.pixels.length < 1 ? (
       <ul>{showColors}</ul>
-      
-      {/* zoom: {'.1',1px},{'1',10px},{'10',100px}  */}
-      <Canvas zoom="1" pixelData={this.state.pixels}/>
-      
+    ) : (
+      <div>
+      <h2>{this.state.pixels.length} colors:</h2>
+      <ul>{showColors}</ul>
+      </div>
+    )
+    
+    return (
+    <div className='flex-container'>
+      <div id="canvas-target" className='flex-box canvas-box'>
+         {fileUpload}
+         <Canvas id = 'picasso-canvas'
+            height = '26'
+            width = '26'
+            zoom = '10'
+            pixelData = {this.state.pixels}
+            canvasElem = {this.props.canvasElem}/>
+      </div>
+      <div className='flex-box directions-box'>
+        {showLegend}
+      </div>
     </div>
     )
   }
