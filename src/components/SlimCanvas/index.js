@@ -6,32 +6,33 @@ export default class SlimCanvas extends React.Component {
     super(props)
   }
   
-  componentDidMount() {
-    
-  }
-  
   componentDidUpdate() {
-    this.updateCanvas()
+
+    if(this.props.readyToDraw) {
+      this.clearCanvas()
+      this.drawImageToCanvas()
+      if(this.props.readyToRead){
+        this.getCanvasData()
+        this.props.setReadyToRead(false)
+      }
+    } else {
+      this.loadCanvas()
+    }
   }
   
-  updateCanvas() {
-    const ctx = this.refs.canvas.getContext('2d')
-    const img = new Image()
-    const self = this
-    
-    img.src = this.props.image
-    
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0, self.props.width, self.props.height, 0, 0, self.props.width, self.props.height)
-      
-      
-      // push image data up to parent so ...
-      // 1. sibling buttons can trigger a new image instance
-      // 2. so I can send mutated data back this this component AND others...
-      
-      
-      //this.props.imageObject(img)
-    };
+  loadCanvas() {
+      const img = new Image()
+      const self = this
+
+      img.src = this.props.imageString
+      img.onload = function() {
+        self.props.setCanvasData(img)
+        self.props.setReadyToRead(true)
+      };
+  }
+  
+  drawImageToCanvas() {
+    this.refs.canvas.getContext('2d').drawImage(this.props.imageElem, 0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height)
   }
   
   clearCanvas() {
@@ -57,7 +58,7 @@ export default class SlimCanvas extends React.Component {
     colorCache.push(pixel)
   }
   
-  getCanvasData() {
+  getCanvasData = function() {
     var colorCache = []
     var self = this
     for(var y = 0; y < this.props.height; y++){
@@ -75,12 +76,14 @@ export default class SlimCanvas extends React.Component {
             } else {
               this.addPixelColorToColorCache(pixel, colorCache)
             }
-          } else {
-              this.addPixelColorToColorCache(pixel, colorCache)
+        } else {
+            this.addPixelColorToColorCache(pixel, colorCache)
         }
       }
     }
-    this.setState({ pixels: colorCache })
+    if(colorCache.length > 0){
+      self.props.setColorArray(colorCache)
+    }
   }
   
   render() {

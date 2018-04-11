@@ -14,9 +14,7 @@ const TemplateWrapper = ({ children }) => (
         { name: 'keywords', content: 'art, kids, painting, pixels, pixel art, paints, arts and crafts, crafts, birthday, christmas, picasso' },
       ]}
     />
-    {location.pathname != '/fish' &&
-      <Header />
-    }
+    <Header />
     <div
       style={{
         margin: '0 auto',

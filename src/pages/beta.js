@@ -1,179 +1,153 @@
 import React from 'react'
+import groupArray from 'group-array'
 import Link from 'gatsby-link'
-import getCanvasPixelColor from 'get-canvas-pixel-color'
 
-import Colors from '../components/Colors'
-import Canvas from '../components/Canvas'
 import FileUpload from '../components/FileUpload'
+import Legend from '../components/Legend'
+import SlimCanvas from '../components/SlimCanvas'
+import MasterColorList from '../components/Data/masterColorList'
+import RgbConversionList from '../components/Data/rgbConversionList'
+
 
  export default class BetaPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageBase64: null,
-      imageElem: null,
-      canvasElem: null,
-      canvasId: 'picasso-canvas',
-      hasImageData: false,
-      hasPixelData: false,
-      pixels: []
+      base64String: null,
+      canvasData: [],
+      colorArray: [],
+      readyToDraw: false,
+      readyToRead: false,
+      legend: []
     }
     this.setImageBase64 = this.setImageBase64.bind(this)
-    this.processImage = this.processImage.bind(this)
-    this.setCanvasElem = this.setCanvasElem.bind(this)
+    this.setCanvasData = this.setCanvasData.bind(this)
+    this.setColorArray = this.setColorArray.bind(this)
+    this.setReadyToDraw = this.setReadyToDraw.bind(this)
+    this.setReadyToRead = this.setReadyToRead.bind(this)
   }
   
-  setImageBase64 = function(base64String){
-    var self = this
-    var img = new window.Image();
-    
-    this.setState({ imageBase64: base64String })
-    img.setAttribute("src", this.state.imageBase64);
-    
-    img.onload = () => {
-      debugger
-      this.setState({ hasImageData: true})
-      this.setState({ imageElem: img })
-      self.process()
-    }
    
+  setImageBase64 = function(base64String){
+    this.setState({ base64String: base64String })
   }
-  
-  process = function() {
-    this.processImage()
-  }
-  
-  quantize = function(){
-    console.log("TODO: quantize image")
-  }
-  
-  pixelate = function(){
-    console.log("TODO: pixelate image")
-  }
-  
-  resize = function(){
-    console.log("TODO: resize image")
-  }
-  
-  crop = function(){
-    console.log("TODO: crop image")
-  }
-  
-  colorInArray = function(color, colorArray){
-    var position = -1
-    for(var i = 0, len = colorArray.length; i < len; i++){
-        if (color === colorArray[i].rgb) {
-          position = i
-          return position
-        }
-    }
-    return position
-  }
-  
-  addCoordsToColorInColorCache = function(x, y, pixelColor, colorCache, colorCacheIndex){
-    colorCache[colorCacheIndex].colorArray.push([x, y])
-  }
-  
-  addPixelColorToColorCache = function(pixel, colorCache){
-    colorCache.push(pixel)
-  }
-  
-  setCanvasElem = function(){
-    var elem = document.getElementById(this.state.canvasId).getElementsByTagName('canvas')[0]
-    this.setState(canvasElem: elem)
-  }
-  
-  processImage = function(){
-    this.quantize()
-    this.pixelate()
-    this.resize()
-    this.crop()
-    this.setCanvasElem()
-    
-    var colorCache = []
-    // UGH this is hacky but I can't figure out how to identify the canvas instance
-    debugger
-    // crop to top 26px...
-    this.state.canvasElem.getContext("2d").drawImage(this.state.imageElem, 0, 0, this.state.canvasWidth,  this.state.canvasHeight, 0, 0, this.state.canvasWidth, this.state.canvasHeight);
-    
-    // For each pixel...
-    for(var y = 0; y < self.state.canvasHeight; y++){
-      for(var x = 0; x < self.state.canvasWidth; x++){
-        var pixelColor = getCanvasPixelColor(canvasElem, x, y).rgb
-        var pixel = {rgb: pixelColor, colorArray: [[x, y]]}
 
-        if(colorCache.length > 0){
-          var pixelColorInColorCache = self.colorInArray(pixelColor, colorCache)
-          var colorCacheIndex = self.colorInArray(pixelColor, colorCache)
-          var addPixelColorToColorCache = self.colorToArray
-          var addCoordsToColorInColorCache = self.coordsToColorInArray
-
-          if(pixelColorInColorCache > -1){
-              self.addCoordsToColorInColorCache(x, y, pixelColor, colorCache, colorCacheIndex)
-          } else {
-            self.addPixelColorToColorCache(pixel, colorCache)
-          }
-        } else {
-            self.addPixelColorToColorCache(pixel, colorCache)
-        }
-      }
-    }
-    self.setState({ pixels: colorCache })
+  setCanvasData = function(canvasData){
+    this.setState({ canvasData: canvasData })
+    this.setState({ readyToDraw: true })  
   }
   
-  render() {   
-    const fileUpload = this.state.hasImageData ? (
-        <div>
-        <h2 className='fadein3000'>File uploaded!</h2>
-        <FileUpload base64Image={this.setImageBase64}/>
-        </div>
-      ):(
-        <FileUpload base64Image={this.setImageBase64}/>
-    )
+  setReadyToDraw = function(readyToDraw){
+    this.setState({ readyToDraw: readyToDraw })
+  }
+
+  setReadyToRead = function(readyToRead){
+    this.setState({ readyToRead: readyToRead })
+  }
+  
+  setColorArray = function(colorArray){
+    if(this.state.colorArray !== colorArray) {
+    
+      // janky require to hookup conversion list...
+      const conversionList = RgbConversionList()
+      const masterList = MasterColorList()
+      const nearestColor = require('nearest-color').from(conversionList);
+      
+      let colorsForLegend = []
+
+      colorArray.map(function(color, i){
+        
+         var nearest = nearestColor(color.rgb)
+         var nearestId = nearest.name.substr(5)
+         var nearestName = masterList[nearestId].name
+         var nearestPaint = masterList[nearestId].paint
+         var nearestRgb = nearest.value
+         var distanceFromOriginal = Math.floor(nearest.distance)
+         
+         var c = {
+           id: nearestId, 
+           rgb: color.rgb, 
+           nearestName: nearestName,
+           nearestPaint: nearestPaint,
+           nearestRgb: nearestRgb,
+           distanceFromOriginal: distanceFromOriginal,
+           locations: color.colorArray
+         }
+         colorsForLegend.push(c)
+       })
+
+       const groupedByRgb = groupArray(colorsForLegend, 'id')
+       var sortedByInstances = []
+       for(var color in groupedByRgb) {
+          sortedByInstances.push([color, groupedByRgb[color]])
+       }
+      
+       sortedByInstances.sort(function(a, b) {
+          return b[1].length - a[1].length
+       });
        
-    
-    const sortedColors = this.state.pixels.sort((a, b) => b.colorArray.length - a.colorArray.length)
-    const showColors = sortedColors.map((color, index) => {
-      return (
-        <li key={index}>
-        <p>{this.state.pixels[index].rgb} has {this.state.pixels[index].colorArray.length} instances.</p>
-        <h4>Locations @:</h4>
-        <p style={{margin: '-15px 0 30px'}}>
-          {color.colorArray.map((color, i) => {
-              return (
-                <span key={i}>[{color[0]}, {color[1]}] </span>
-              )
-            })
-          }
-        </p>
-      </li>
-      )
-    })
-    
-    const showLegend = this.state.pixels.length < 1 ? (
-      <ul>{showColors}</ul>
-    ) : (
-      <div>
-      <h2>{this.state.pixels.length} colors:</h2>
-      <ul>{showColors}</ul>
-      </div>
-    )
-    
-    return (
-    <div className='flex-container'>
-      <div id="canvas-target" className='flex-box canvas-box'>
-         {fileUpload}
-         <Canvas id = 'picasso-canvas'
-            height = '26'
-            width = '26'
-            zoom = '10'
-            pixelData = {this.state.pixels}
-            canvasElem = {this.props.canvasElem}/>
+       var readyForLegend = []
+       sortedByInstances.map(function(color, i){
+          var colorId = color[0]
+          var colorAncestors = color[1]
+          
+          var ancestorLocations = []
+          var ancestorName = colorAncestors[0].nearestName
+          var ancestorRgb = colorAncestors[0].rgb
+          
+          colorAncestors.map(function(ancestor, k){
+             ancestorLocations.push.apply(ancestorLocations, ancestor.locations)
+          })
+
+          readyForLegend.push({rgb: ancestorRgb, id: colorId, paint: ancestorName, locations: ancestorLocations})
+       })
+       
+       // TODO sort ancestor Locations
+       this.setLegend(readyForLegend)
+       
+       // TODO set color to something the canvas can use
+       // TODO write large pixels canvas
+       this.setState({ colorArray: colorArray })
+    }
+  }
+  
+  setLegend = function(colorsForLegend){
+      this.setState({ legend: colorsForLegend })
+  }
+  
+  nearestColorName = function(){
+    const matchName = nearestColor(self.props.color.rgb).name
+    const colorName = masterColorList[matchName.substr(5)].name
+    return colorName
+  }
+
+  nearestColorRgb = function(){
+    return nearestColor(self.props.color.rgb).value
+  }
+
+  nearestColorPaint = function(){
+    const matchName = nearestColor(self.props.color.rgb).name
+    const paint = masterColorList[matchName.substr(5)].paint
+    return paint
+  }
+
+  nearestColorDistance = function(){
+    return Math.floor(nearestColor(self.props.color.rgb).distance)
+  }
+  
+  render() {
+    return(
+      <div className='flex-container'>
+      <div className='flex-box canvas-box'>
+        <h2>Pardon the dust?</h2>
+        <p>Thanks for helping us test our new product. If you have any questions or feedback please <Link to="/about/">let us know</Link>.</p>
+        <FileUpload base64Image={this.setImageBase64} readyToDraw={this.setReadyToDraw} />
+        <SlimCanvas id='picasso' width='26' height='26' zoom='1' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
       </div>
       <div className='flex-box directions-box'>
-        {showLegend}
+        <Legend colorArray={this.state.legend}/>
       </div>
     </div>
     )
   }
-}
+ }

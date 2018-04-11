@@ -75,5 +75,6 @@ export default class FileUpload extends React.Component {
  
   handleFileSelected(event, file){
     this.props.base64Image(event.target.result)
+    this.props.readyToDraw(false)
   }
 }

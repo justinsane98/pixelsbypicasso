@@ -1,5 +1,7 @@
-{
-  "data": [
+import React from "react"
+
+const MasterColorList = () => (
+[
   {
       "id": 1,
       "name": "Peach",
@@ -443,4 +445,5 @@
       "paint": "Pale Blue / White"
     }
   ]
-}
+)
+export default MasterColorList
