@@ -99,7 +99,6 @@ import RgbConversionList from '../components/Data/rgbConversionList'
              ancestorLocations.push.apply(ancestorLocations, ancestor.locations)
           })
           
-          
           ancestorLocations.sort(function(a, b) {
             return a[0] - b[0] || a[1] - b[1]
           })
