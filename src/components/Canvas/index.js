@@ -8,7 +8,7 @@ export default class Canvas extends React.Component {
     if(this.props.canvasElem){
        if(this.props.pixelData.length > 0){
         this.props.pixelData.map((pixel, index) => {
-        return <Pixel color={pixel.color} key={index} x={pixel.x} y={pixel.y} zoom={this.props.zoom} />
+          return <Pixel color={pixel.color} key={index} x={pixel.x} y={pixel.y} zoom={this.props.zoom} />
       })
       }
     }

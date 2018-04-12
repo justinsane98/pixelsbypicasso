@@ -98,6 +98,11 @@ import RgbConversionList from '../components/Data/rgbConversionList'
           colorAncestors.map(function(ancestor, k){
              ancestorLocations.push.apply(ancestorLocations, ancestor.locations)
           })
+          
+          
+          ancestorLocations.sort(function(a, b) {
+            return a[0] - b[0] || a[1] - b[1]
+          })
 
           readyForLegend.push({rgb: ancestorRgb, id: colorId, paint: ancestorName, locations: ancestorLocations})
        })
@@ -142,7 +147,7 @@ import RgbConversionList from '../components/Data/rgbConversionList'
         <h2>Pardon the dust?</h2>
         <p>Thanks for helping us test our new product. If you have any questions or feedback please <Link to="/about/">let us know</Link>.</p>
         <FileUpload base64Image={this.setImageBase64} readyToDraw={this.setReadyToDraw} />
-        <SlimCanvas id='picasso' width='26' height='26' zoom='1' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
+        <SlimCanvas id='picasso' width='26' height='26' zoom='10' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
       </div>
       <div className='flex-box directions-box'>
         <Legend colorArray={this.state.legend}/>
