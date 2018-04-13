@@ -726,3 +726,8 @@ ul.naked {
   background-color: white;
   padding: 20px;
 }
+
+a.pixel-complete {
+  opacity: 0.75;
+  text-decoration: line-through !important;
+}

@@ -443,6 +443,225 @@ const MasterColorList = () => (
       "rgb": [131, 254, 229],
       "hex": "#83FEE5",
       "paint": "Pale Blue / White"
+    },
+  
+    {
+      "id": 64,
+      "name": "Dark Peach",
+      "rgb": [106, 79, 71],
+      "hex": '#6A4F47',
+      "paint": "Coral / Black"
+    },
+    {
+      "id": 65,
+      "name": "Dark Apple",
+      "rgb": [121, 29, 14],
+      "hex": "#791D0E",
+      "paint": "Red / Black"
+    },
+    {
+      "id": 66,
+      "name": "Dark Cherry",
+      "rgb": [80, 21, 24],
+      "hex": "#501518",
+      "paint": "Cherry Cobbler / Black"
+    },
+    {
+      "id": 67,
+      "name": "Dark Cupcake",
+      "rgb": [124, 23, 60],
+      "hex": "#7C173C",
+      "paint": "Bright Red / Black"
+    },
+    {
+      "id": 68,
+      "name": "Dark Bubblegum",
+      "rgb": [125, 79, 108],
+      "hex": "#7D4F6C",
+      "paint": "Pink Blast / Black"
+    },
+
+    {
+      "id": 69,
+      "name": "Dark Sprinkles",
+      "rgb": [114, 13, 123],
+      "hex": "#720D7B",
+      "paint": "Fuschia / Black"
+    },
+    {
+      "id": 70,
+      "name": "Dark Eggplant",
+      "rgb": [76, 23, 61],
+      "hex": "#4C173D",
+      "paint": "Plum / Black"
+    },
+    {
+      "id": 71,
+      "name": "Dark Wine",
+      "rgb": [35, 0, 15],
+      "hex": "#23000F",
+      "paint": "Wine / Black"
+    },
+    {
+      "id": 72,
+      "name": "Dark Blueberry",
+      "rgb": [2, 8, 42],
+      "hex": "#02082A",
+      "paint": "Violet / Black"
+    },
+    {
+      "id": 73,
+      "name": "Dark Grape",
+      "rgb": [39, 0, 117],
+      "hex": "#270075",
+      "paint": "Purple / Black"
+    },
+    {
+      "id": 74,
+      "name": "Dark Tuna",
+      "rgb": [22, 52, 101],
+      "hex": "#163465",
+      "paint": "Dark Blue / Black"
+    },
+    {
+      "id": 75,
+      "name": "Dark Water",
+      "rgb": [0, 82, 118],
+      "hex": "#005276",
+      "paint": "Bright Blue / Black"
+    },
+    {
+      "id": 76,
+      "name": "Dark Cottoncandy",
+      "rgb": [55, 117, 127],
+      "hex": "#37757F",
+      "paint": "Robin Egg / Black"
+    },
+    {
+      "id": 77,
+      "name": "Dark Mahi",
+      "rgb": [3, 80, 76],
+      "hex": "#03504C",
+      "paint": "Turquoise / Black"
+    },
+    {
+      "id": 78,
+      "name": "Dark Broccoli",
+      "rgb": [20, 50 ,52 ],
+      "hex": "#143234",
+      "paint": "Green Teal / Black"
+    },
+    {
+      "id": 79,
+      "name": "Dark Spinach",
+      "rgb": [2, 26, 12],
+      "hex": "#021A0C",
+      "paint": "Hunter Green / Black"
+    },
+    {
+      "id": 80,
+      "name": "Dark Oyster",
+      "rgb": [36, 36, 43],
+      "hex": "#24242B",
+      "paint": "Dark Grey / Black"
+    },
+    {
+      "id": 81,
+      "name": "Dark Plum",
+      "rgb": [70, 61, 81],
+      "hex": "#463D51",
+      "paint": "Orchid / Black"
+    },
+    {
+      "id": 82,
+      "name": "Dark Lavender",
+      "rgb": [91, 95, 127],
+      "hex": "#5B5F7F",
+      "paint": "Lavender / Black"
+    },
+   {
+      "id": 83,
+      "name": "Dark Marhmallow",
+      "rgb": [127, 127, 127],
+      "hex": "#7F7F7F",
+      "paint": "Tan / Black"
+    },
+    {
+      "id": 84,
+      "name": "Dark Pistachio",
+      "rgb": [85, 94, 77],
+      "hex": "#555E4D",
+      "paint": "Pistachio / Black"
+    },
+    {
+      "id": 85,
+      "name": "Dark Gravy",
+      "rgb": [64, 61, 55],
+      "hex": "#403D37",
+      "paint": "Grey / Black"
+    },
+    {
+      "id": 86,
+      "name": "Dark Coffee",
+      "rgb": [44, 29, 13],
+      "hex": "#2C1D0D",
+      "paint": "Espresso / Black"
+    },
+    {
+      "id": 87,
+      "name": "Dark Chocolate",
+      "rgb": [86, 50, 3],
+      "hex": "#563203",
+      "paint": "Brown / Black"
+    },
+    {
+      "id": 88,
+      "name": "Dark Pumpkin",
+      "rgb": [123, 84, 23],
+      "hex": "#7B5417",
+      "paint": "Pure Pumpkin / Black"
+    },
+    {
+      "id": 89,
+      "name": "Dark Lemon",
+      "rgb": [121, 116, 45],
+      "hex": "#79742D",
+      "paint": "Bright Yellow / Black"
+    },
+    {
+      "id": 90,
+      "name": "Dark Pea",
+      "rgb": [77, 74, 0],
+      "hex": "#4D4A00",
+      "paint": "Spanish Olive / Black"
+    },
+    {
+      "id": 91,
+      "name": "Dark Olive",
+      "rgb": [42, 48, 1],
+      "hex": "#2A3001",
+      "paint": "Shamrock / Black"
+    },
+    {
+      "id": 92,
+      "name": "Dark Lettuce",
+      "rgb": [8, 74, 29],
+      "hex": "#084A1D",
+      "paint": "Grass Green / Black"
+    },
+    {
+      "id": 93,
+      "name": "Dark Lime",
+      "rgb": [40, 112, 9],
+      "hex": "#287009",
+      "paint": "Lime Green / Black"
+    },
+    {
+      "id": 94,
+      "name": "Dark Frosting",
+      "rgb": [3, 126, 101],
+      "hex": "#037E65",
+      "paint": "Pale Blue / Black"
     }
   ]
 )

@@ -32,11 +32,11 @@ export default class SlimCanvas extends React.Component {
   }
   
   drawImageToCanvas() {
-    this.refs.canvas.getContext('2d').drawImage(this.props.imageElem, 0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height)
+    this.refs.slimCanvas.getContext('2d').drawImage(this.props.imageElem, 0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height)
   }
   
   clearCanvas() {
-    this.refs.canvas.getContext('2d').clearRect(0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height);
+    this.refs.slimCanvas.getContext('2d').clearRect(0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height);
   }
   
   colorInArray = function(color, colorArray){
@@ -63,7 +63,7 @@ export default class SlimCanvas extends React.Component {
     var self = this
     for(var y = 0; y < this.props.height; y++){
       for(var x = 0; x < this.props.width; x++){
-        var pixelColor = getCanvasPixelColor(this.refs.canvas, x, y).rgb
+        var pixelColor = getCanvasPixelColor(this.refs.slimCanvas, x, y).rgb
         var pixel = {rgb: pixelColor, colorArray: [[x, y]]}
         if(colorCache.length > 0){
           var pixelColorInColorCache = this.colorInArray(pixelColor, colorCache)
@@ -88,7 +88,7 @@ export default class SlimCanvas extends React.Component {
   
   render() {
     return (
-      <canvas ref='canvas' id={this.props.id} width={this.props.width * this.props.zoom} height={this.props.height * this.props.zoom}></canvas>
+      <canvas ref='slimCanvas' id={this.props.id} width={this.props.width * this.props.zoom} height={this.props.height * this.props.zoom}></canvas>
     )
   }
 }

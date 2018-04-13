@@ -4,6 +4,7 @@ import Link from 'gatsby-link'
 
 import FileUpload from '../components/FileUpload'
 import Legend from '../components/Legend'
+import Canvas from '../components/Canvas'
 import SlimCanvas from '../components/SlimCanvas'
 import MasterColorList from '../components/Data/masterColorList'
 import RgbConversionList from '../components/Data/rgbConversionList'
@@ -54,9 +55,9 @@ import RgbConversionList from '../components/Data/rgbConversionList'
       const nearestColor = require('nearest-color').from(conversionList);
       
       let colorsForLegend = []
-
+      
       colorArray.map(function(color, i){
-        
+ 
          var nearest = nearestColor(color.rgb)
          var nearestId = nearest.name.substr(5)
          var nearestName = masterList[nearestId].name
@@ -87,14 +88,14 @@ import RgbConversionList from '../components/Data/rgbConversionList'
        });
        
        var readyForLegend = []
+       var readyForCanvas = []
        sortedByInstances.map(function(color, i){
           var colorId = color[0]
           var colorAncestors = color[1]
           
           var ancestorLocations = []
           var ancestorName = colorAncestors[0].nearestName
-          var ancestorRgb = colorAncestors[0].rgb
-          
+          var ancestorRgb = colorAncestors[0].nearestRgb
           colorAncestors.map(function(ancestor, k){
              ancestorLocations.push.apply(ancestorLocations, ancestor.locations)
           })
@@ -102,15 +103,12 @@ import RgbConversionList from '../components/Data/rgbConversionList'
           ancestorLocations.sort(function(a, b) {
             return a[0] - b[0] || a[1] - b[1]
           })
-
+          
           readyForLegend.push({rgb: ancestorRgb, id: colorId, paint: ancestorName, locations: ancestorLocations})
        })
        
-       // TODO sort ancestor Locations
-       this.setLegend(readyForLegend)
        
-       // TODO set color to something the canvas can use
-       // TODO write large pixels canvas
+       this.setLegend(readyForLegend)
        this.setState({ colorArray: colorArray })
     }
   }
@@ -140,14 +138,24 @@ import RgbConversionList from '../components/Data/rgbConversionList'
   }
   
   render() {
+    const self = this
+    const legend = function(){
+      if (self.state.legend.length > 0){
+        return true
+      }
+    }
     return(
       <div className='flex-container'>
       <div className='flex-box canvas-box'>
         <h2>Pardon the dust?</h2>
         <p>Thanks for helping us test our new product. If you have any questions or feedback please <Link to="/about/">let us know</Link>.</p>
         <FileUpload base64Image={this.setImageBase64} readyToDraw={this.setReadyToDraw} />
-        <SlimCanvas id='picasso' width='26' height='26' zoom='10' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
-      </div>
+        {legend() ? (
+          <Canvas pixelData={this.state.legend} height='26' width='26' zoom='15'/>
+        ):(
+          <SlimCanvas id='picasso' width='26' height='26' zoom='10' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
+        )}
+              </div>
       <div className='flex-box directions-box'>
         <Legend colorArray={this.state.legend}/>
       </div>
