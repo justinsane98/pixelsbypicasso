@@ -12,14 +12,13 @@ export default class Canvas extends React.Component {
   updateCanvas() {
     const self = this
     const ctx = self.refs.canvas.getContext('2d')
-    
     if(this.props.pixelData.length > 0){
       this.props.pixelData.forEach(function(color) {
         ctx.fillStyle = color.rgb
         color.locations.forEach(function(coord) {    
-          var x = coord[0] * self.props.zoom
-          var y = coord[1] * self.props.zoom
-          ctx.fillRect(x, y, self.props.zoom, self.props.zoom);
+          var x = (coord[0] * self.props.zoom)
+          var y = (coord[1] * self.props.zoom)
+          ctx.fillRect(x, y, self.props.zoom-1, self.props.zoom-1);
       })
      })
     }

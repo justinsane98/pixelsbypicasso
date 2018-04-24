@@ -17,7 +17,8 @@
     "react-dom": "^15.6.2",
     "react-helmet": "^5.2.0",
     "react-konva": "^1.1.6",
-    "react-simple-file-input": "^2.1.0"
+    "react-simple-file-input": "^2.1.0",
+    "rgbquant": "^1.1.2"
   },
   "keywords": [
     "gatsby"

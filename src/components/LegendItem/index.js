@@ -9,12 +9,15 @@ export default class LegendItem extends React.Component {
     )
 
     return (
-      <div key={this.props.rgb} style={{marginBottom: '50px', position: 'relative'}}>
+      <div key={this.props.rgb} style={{position: 'relative'}}>
         <div className='swatch' style={{backgroundColor: this.props.rgb}}></div>
-        <h3>{this.props.paint} (#{this.props.id})</h3>
-        <p style={{margin: '-10px 0 10px 0'}}><strong>{this.props.rgb}</strong></p>
-        <p><strong>Locations ({this.props.locations.length}):</strong><br/></p>
-        <p>{coords}</p>
+        <div style={{margin: '5px 0 0 5px'}}> 
+          <h3>{this.props.name} (#{this.props.id})</h3>
+          <p style={{margin: '-15px 0 15px', fontSize: '14px'}}>{this.props.paint}<br/>
+          {this.props.rgb}<br/>
+          Locations({this.props.locations.length}):</p>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap'}}>{coords}</div>
       </div>
     )
   }

@@ -29,13 +29,15 @@ export default class Location extends React.Component {
         href=''
         className={self.toggleClassName()}
         style={{
-          display:'inline-block',
-          width: '50px',
+          flex: '0 1 10%',
+          display: 'inline-block',
           textDecoration: 'none',
+          fontWeight: '600',
+          fontSize: '11px',
           textAlign: 'center',
           border: '1px solid rgba(0,0,0,0.05)',
           margin: '0 5px 5px 0',
-          lineHeight: '30px'}}
+          lineHeight: '26px'}}
         onClick={function(e){
           e.preventDefault()
           self.toggleOnOff()
@@ -47,7 +49,7 @@ export default class Location extends React.Component {
           e.target.style.backgroundColor = ''
         }}
       >
-      {alpha.charAt(this.props.x)}{this.props.y}
+      {alpha.charAt(this.props.y)}{this.props.x+1}
       </a>
     )
   }

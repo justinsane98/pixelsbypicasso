@@ -19,7 +19,9 @@ import RgbConversionList from '../components/Data/rgbConversionList'
       colorArray: [],
       readyToDraw: false,
       readyToRead: false,
-      legend: []
+      legend: [],
+      canvasHeight: 26,
+      canvasWidth: 26
     }
     this.setImageBase64 = this.setImageBase64.bind(this)
     this.setCanvasData = this.setCanvasData.bind(this)
@@ -57,11 +59,10 @@ import RgbConversionList from '../components/Data/rgbConversionList'
       let colorsForLegend = []
       
       colorArray.map(function(color, i){
- 
          var nearest = nearestColor(color.rgb)
          var nearestId = nearest.name.substr(5)
-         var nearestName = masterList[nearestId].name
-         var nearestPaint = masterList[nearestId].paint
+         var nearestName = masterList[nearestId-1].name
+         var nearestPaint = masterList[nearestId-1].paint
          var nearestRgb = nearest.value
          var distanceFromOriginal = Math.floor(nearest.distance)
          
@@ -95,16 +96,17 @@ import RgbConversionList from '../components/Data/rgbConversionList'
           
           var ancestorLocations = []
           var ancestorName = colorAncestors[0].nearestName
+          var ancestorPaint = colorAncestors[0].nearestPaint
           var ancestorRgb = colorAncestors[0].nearestRgb
           colorAncestors.map(function(ancestor, k){
              ancestorLocations.push.apply(ancestorLocations, ancestor.locations)
           })
           
           ancestorLocations.sort(function(a, b) {
-            return a[0] - b[0] || a[1] - b[1]
+            return a[1] - b[1] || a[0] - b[0]
           })
           
-          readyForLegend.push({rgb: ancestorRgb, id: colorId, paint: ancestorName, locations: ancestorLocations})
+          readyForLegend.push({rgb: ancestorRgb, id: colorId, name: ancestorName, paint: ancestorPaint, locations: ancestorLocations})
        })
        
        
@@ -115,12 +117,6 @@ import RgbConversionList from '../components/Data/rgbConversionList'
   
   setLegend = function(colorsForLegend){
       this.setState({ legend: colorsForLegend })
-  }
-  
-  nearestColorName = function(){
-    const matchName = nearestColor(self.props.color.rgb).name
-    const colorName = masterColorList[matchName.substr(5)].name
-    return colorName
   }
 
   nearestColorRgb = function(){
@@ -147,15 +143,18 @@ import RgbConversionList from '../components/Data/rgbConversionList'
     return(
       <div className='flex-container'>
       <div className='flex-box canvas-box'>
-        <h2>Pardon the dust?</h2>
-        <p>Thanks for helping us test our new product. If you have any questions or feedback please <Link to="/about/">let us know</Link>.</p>
-        <FileUpload base64Image={this.setImageBase64} readyToDraw={this.setReadyToDraw} />
-        {legend() ? (
-          <Canvas pixelData={this.state.legend} height='26' width='26' zoom='15'/>
-        ):(
-          <SlimCanvas id='picasso' width='26' height='26' zoom='10' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
-        )}
-              </div>
+          {legend() ? (
+            <Canvas pixelData={this.state.legend} height={this.state.canvasHeight} width={this.state.canvasWidth} zoom='15'/>
+          ):(
+            <SlimCanvas id='picasso' width={this.state.canvasWidth} height={this.state.canvasHeight} zoom='1' imageString={this.state.base64String} imageElem={this.state.canvasData} setCanvasData={this.setCanvasData} setColorArray={this.setColorArray} readyToDraw={this.state.readyToDraw} readyToRead={this.state.readyToRead} setReadyToRead={this.setReadyToRead}/>
+          )}
+          <br/>
+          <div style={{maxWidth: '390px'}}>
+            <FileUpload base64Image={this.setImageBase64} readyToDraw={this.setReadyToDraw} />
+            <h2>Pardon the dust?</h2>
+            <p>Thanks for helping us test our new product. If you have any questions or feedback please <Link to="/about/">let us know</Link>.</p>
+          </div>
+        </div>
       <div className='flex-box directions-box'>
         <Legend colorArray={this.state.legend}/>
       </div>

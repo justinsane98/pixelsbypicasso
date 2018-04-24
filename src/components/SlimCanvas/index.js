@@ -1,5 +1,8 @@
 import React from "react"
+import RgbQuant from 'rgbquant'
 import getCanvasPixelColor from 'get-canvas-pixel-color'
+
+import QuantizedPalette from '../Data/quantizedPalette'
 
 export default class SlimCanvas extends React.Component { 
   constructor(props){
@@ -7,23 +10,21 @@ export default class SlimCanvas extends React.Component {
   }
   
   componentDidUpdate() {
-
     if(this.props.readyToDraw) {
       this.clearCanvas()
-      this.drawImageToCanvas()
+      //this.drawImageToCanvas()
+      this.drawQuantizedImageToCanvas()
       if(this.props.readyToRead){
         this.getCanvasData()
-        this.props.setReadyToRead(false)
       }
     } else {
-      this.loadCanvas()
+      this.loadImage()
     }
   }
   
-  loadCanvas() {
-      const img = new Image()
+  loadImage() {
       const self = this
-
+      const img = new Image()
       img.src = this.props.imageString
       img.onload = function() {
         self.props.setCanvasData(img)
@@ -34,6 +35,31 @@ export default class SlimCanvas extends React.Component {
   drawImageToCanvas() {
     this.refs.slimCanvas.getContext('2d').drawImage(this.props.imageElem, 0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height)
   }
+  
+  drawQuantizedImageToCanvas() {
+    const quantizedImageElem = new Image()
+    quantizedImageElem.src = this.props.imageString
+
+    var q = new RgbQuant({method: 2, colors: 94, palette: QuantizedPalette(), reIndex: true, useCache: false })
+    
+    q.sample(quantizedImageElem)
+    var pal = q.palette()
+    var reducedData = q.reduce(quantizedImageElem)
+    var imgd = this.refs.slimCanvas.getContext('2d').createImageData(this.props.height,this.props.height);
+    imgd.data.set(reducedData);
+    
+    this.refs.slimCanvas.getContext('2d').putImageData(imgd, 0, 0)
+  }
+  
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = new Uint8Array( buffer );
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa( binary );
+}
   
   clearCanvas() {
     this.refs.slimCanvas.getContext('2d').clearRect(0, 0, this.props.width, this.props.height, 0, 0, this.props.width, this.props.height);
@@ -88,7 +114,7 @@ export default class SlimCanvas extends React.Component {
   
   render() {
     return (
-      <canvas ref='slimCanvas' id={this.props.id} width={this.props.width * this.props.zoom} height={this.props.height * this.props.zoom}></canvas>
+      <canvas ref='slimCanvas' id={this.props.id} width={this.props.width} height={this.props.height}></canvas>
     )
   }
 }

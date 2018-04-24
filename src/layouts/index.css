@@ -133,7 +133,6 @@ span.button {
   padding: 10px 0;
   background-color: rgba(0,206,209, 0.7);
   border: 0px solid rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
   color: white;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
   font-weight: 500;
@@ -702,15 +701,8 @@ ul.naked {
     flex: 1;
   }
   .directions-box {
-    flex: 2;
-  }
-}
-@media only screen and (min-width: 1025px){
-  .canvas-box {
     flex: 1;
-  }
-  .directions-box {
-    flex: 3;
+    min-width: 390px;
   }
 }
 
@@ -719,7 +711,7 @@ ul.naked {
   float: right;
   width: 90px;
   height: 90px;
-  margin: 0;
+  margin: 7px 7px 0 0;
 }
 
 .legend > li {
